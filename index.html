@@ -174,10 +174,10 @@ code{font-size:.85em;background:var(--card);padding:1px 5px;border-radius:4px}
     <h2 id="rTitle">Como se puntúa</h2>
     <ul>
       <li>Todos os xogadores comezan con <strong>100 puntos</strong>.</li>
-      <li>Cada escano de diferenza co resultado, sumando os catro partidos, <strong>resta 2 puntos</strong>. O mínimo é 0.</li>
-      <li>Se hai empate a puntos, gaña quen fallase menos no PP; se segue o empate, quen se inscribiu antes.</li>
+      <li>Cada escano de diferenza co resultado, sumando os catro partidos, <strong>resta 1 punto</strong>. O mínimo é 0.</li>
+      <li>Se hai empate a puntos, gaña quen enviase antes a súa última versión do prognóstico.</li>
     </ul>
-    <p class="example">Exemplo: falla 3 escanos no PP, 4 no PSOE, 2 en VOX e 1 no BNG → 10 escanos de diferenza → 100 − 20 = <strong>80 puntos</strong>.</p>
+    <p class="example">Exemplo: falla 3 escanos no PP, 4 no PSOE, 2 en VOX e 1 no BNG → 10 escanos de diferenza → 100 − 10 = <strong>90 puntos</strong>.</p>
     <p class="hint">No CIS tómase o centro da súa horquilla. As porras dos demais destápanse ao rematar o prazo.</p>
   </section>
 </main>
@@ -219,7 +219,7 @@ const hasResult=()=>resultado&&PARTIES.every(p=>Number.isInteger(resultado[p.k])
 function score(v){
   if(!hasResult())return null;
   const fallo=PARTIES.reduce((s,p)=>s+Math.abs(v[p.k]-resultado[p.k]),0);
-  return{fallo,falloPP:Math.abs(v.pp-resultado.pp),puntos:Math.max(0,100-2*fallo)};
+  return{fallo,falloPP:Math.abs(v.pp-resultado.pp),puntos:Math.max(0,100-fallo)};
 }
 
 /* conta atrás */
@@ -241,7 +241,7 @@ function rows(){
   let players=porras;
   if(!closed())players=me.porra?[{...me.porra,id:me.id}]:[];
   const all=[...REFS,...players].map(x=>({...x,...(score(x)||{})}));
-  if(hasResult())all.sort((a,b)=>b.puntos-a.puntos||a.falloPP-b.falloPP||((a.ref?1:0)-(b.ref?1:0))||(a.creado||0)-(b.creado||0));
+  if(hasResult())all.sort((a,b)=>b.puntos-a.puntos||((a.ref?1:0)-(b.ref?1:0))||(a.actualizado||a.creado||0)-(b.actualizado||b.creado||0));
   else all.sort((a,b)=>(b.ref?1:0)-(a.ref?1:0)||(a.actualizado||a.creado||0)-(b.actualizado||b.creado||0));
   return all;
 }
