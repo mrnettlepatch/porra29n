@@ -1,0 +1,127 @@
+/**
+ * Porra electoral 29-N — backend en Google Apps Script.
+ *
+ * Garda as porras nunha folla de Google Sheets e sérveas á web.
+ * - Pestana "Porras": unha fila por xogador (créase soa).
+ * - Pestana "Resultado": mete aquí o resultado (fila 2) cando o saibas.
+ *
+ * Instrucións no README.md do repositorio.
+ */
+
+// Sábado 28/11/2026 ás 23:59:59, hora peninsular (UTC+1)
+const DEADLINE = new Date('2026-11-28T23:59:59+01:00');
+const PARTIES = ['pp', 'psoe', 'vox', 'bng'];
+const HEADERS = ['id', 'token', 'nome', 'conselleria', 'pp', 'psoe', 'vox', 'bng', 'creado', 'actualizado'];
+
+function setup() {
+  porrasSheet_();
+  resultadoSheet_();
+}
+
+function porrasSheet_() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sh = ss.getSheetByName('Porras');
+  if (!sh) {
+    sh = ss.insertSheet('Porras');
+    sh.appendRow(HEADERS);
+    sh.setFrozenRows(1);
+    sh.getRange('B:B').setFontColor('#aaaaaa'); // o token non é para ler
+  }
+  return sh;
+}
+
+function resultadoSheet_() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sh = ss.getSheetByName('Resultado');
+  if (!sh) {
+    sh = ss.insertSheet('Resultado');
+    sh.getRange('A1:D1').setValues([['PP', 'PSOE', 'VOX', 'BNG']]).setFontWeight('bold');
+    sh.getRange('A3').setValue('Mete o resultado na fila 2 (os catro partidos). Déixaa baleira ata entón.');
+  }
+  return sh;
+}
+
+function json_(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+}
+
+function readPorras_() {
+  const sh = porrasSheet_();
+  const values = sh.getDataRange().getValues();
+  const rows = [];
+  for (let i = 1; i < values.length; i++) {
+    const r = values[i];
+    if (!r[0]) continue;
+    const o = {};
+    HEADERS.forEach((h, j) => (o[h] = r[j]));
+    o.row = i + 1;
+    rows.push(o);
+  }
+  return rows;
+}
+
+function readResultado_() {
+  const v = resultadoSheet_().getRange('A2:D2').getValues()[0];
+  if (v.some(x => x === '' || x === null || isNaN(Number(x)))) return null;
+  const r = {};
+  PARTIES.forEach((p, i) => (r[p] = Number(v[i])));
+  return r;
+}
+
+function publicRow_(o) {
+  return {
+    id: o.id, nome: o.nome, conselleria: o.conselleria,
+    pp: Number(o.pp), psoe: Number(o.psoe), vox: Number(o.vox), bng: Number(o.bng),
+    creado: Number(o.creado) || 0,
+  };
+}
+
+/** GET: devolve o estado. Antes do peche só o número de porras. */
+function doGet() {
+  const closed = Date.now() > DEADLINE.getTime();
+  const porras = readPorras_();
+  return json_({
+    ok: true,
+    closed: closed,
+    deadline: DEADLINE.getTime(),
+    count: porras.length,
+    porras: closed ? porras.map(publicRow_) : [],
+    resultado: readResultado_(),
+  });
+}
+
+/** POST (text/plain con JSON): crea ou actualiza a porra dun xogador. */
+function doPost(e) {
+  if (Date.now() > DEADLINE.getTime()) return json_({ ok: false, error: 'closed' });
+  let d;
+  try { d = JSON.parse(e.postData.contents); } catch (err) { return json_({ ok: false, error: 'bad_request' }); }
+
+  const id = String(d.id || '');
+  const token = String(d.token || '');
+  const nome = String(d.nome || '').trim().slice(0, 40);
+  const conselleria = String(d.conselleria || '').trim().slice(0, 60);
+  if (!/^[a-z0-9-]{8,64}$/i.test(id) || token.length < 16 || !nome || !conselleria) {
+    return json_({ ok: false, error: 'bad_request' });
+  }
+  const vals = PARTIES.map(p => Number(d[p]));
+  if (vals.some(v => !Number.isInteger(v) || v < 0 || v > 350) || vals.reduce((a, b) => a + b, 0) > 350) {
+    return json_({ ok: false, error: 'bad_numbers' });
+  }
+
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    const sh = porrasSheet_();
+    const existing = readPorras_().find(o => o.id === id);
+    const now = Date.now();
+    if (existing) {
+      if (String(existing.token) !== token) return json_({ ok: false, error: 'forbidden' });
+      sh.getRange(existing.row, 3, 1, 8).setValues([[nome, conselleria, ...vals, existing.creado, now]]);
+      return json_({ ok: true, creado: Number(existing.creado), updated: true });
+    }
+    sh.appendRow([id, token, nome, conselleria, ...vals, now, now]);
+    return json_({ ok: true, creado: now, updated: false });
+  } finally {
+    lock.releaseLock();
+  }
+}
