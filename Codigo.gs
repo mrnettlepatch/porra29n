@@ -73,6 +73,7 @@ function publicRow_(o) {
     id: o.id, nome: o.nome, conselleria: o.conselleria,
     pp: Number(o.pp), psoe: Number(o.psoe), vox: Number(o.vox), bng: Number(o.bng),
     creado: Number(o.creado) || 0,
+    actualizado: Number(o.actualizado) || Number(o.creado) || 0,
   };
 }
 
@@ -117,10 +118,10 @@ function doPost(e) {
     if (existing) {
       if (String(existing.token) !== token) return json_({ ok: false, error: 'forbidden' });
       sh.getRange(existing.row, 3, 1, 8).setValues([[nome, conselleria, ...vals, existing.creado, now]]);
-      return json_({ ok: true, creado: Number(existing.creado), updated: true });
+      return json_({ ok: true, creado: Number(existing.creado), actualizado: now, updated: true });
     }
     sh.appendRow([id, token, nome, conselleria, ...vals, now, now]);
-    return json_({ ok: true, creado: now, updated: false });
+    return json_({ ok: true, creado: now, actualizado: now, updated: false });
   } finally {
     lock.releaseLock();
   }

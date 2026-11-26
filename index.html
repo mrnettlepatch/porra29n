@@ -242,7 +242,7 @@ function rows(){
   if(!closed())players=me.porra?[{...me.porra,id:me.id}]:[];
   const all=[...REFS,...players].map(x=>({...x,...(score(x)||{})}));
   if(hasResult())all.sort((a,b)=>b.puntos-a.puntos||a.falloPP-b.falloPP||((a.ref?1:0)-(b.ref?1:0))||(a.creado||0)-(b.creado||0));
-  else all.sort((a,b)=>(b.ref?1:0)-(a.ref?1:0)||(a.creado||0)-(b.creado||0));
+  else all.sort((a,b)=>(b.ref?1:0)-(a.ref?1:0)||(a.actualizado||a.creado||0)-(b.actualizado||b.creado||0));
   return all;
 }
 const fmtTime=t=>t?new Date(t).toLocaleString("gl-ES",{weekday:"short",day:"numeric",hour:"2-digit",minute:"2-digit",hourCycle:"h23",timeZone:"Europe/Madrid"}):"";
@@ -293,7 +293,7 @@ function tableOf(list,res){
     tr.append(name);
     for(const p of PARTIES)tr.append(el("td",{className:res&&x[p.k]===resultado[p.k]?"exact":""},x[p.k]));
     if(res)tr.append(el("td",{},x.fallo===0?"0 ✓":x.fallo));
-    else tr.append(el("td",{className:"time"},x.ref?"":fmtTime(x.creado)));
+    else tr.append(el("td",{className:"time"},x.ref?"":fmtTime(x.actualizado||x.creado)));
     tr.append(el("td",{className:"pts"},res?x.puntos:"–"));
     tb.append(tr);
   }
@@ -339,7 +339,7 @@ $("form").addEventListener("submit",async e=>{
       return fail(errs[j.error]||"Non se puido gardar. Téntao de novo.");
     }
     const prev=!!me.porra;
-    me.porra={...porra,creado:j.creado};saveMe(me);
+    me.porra={...porra,creado:j.creado,actualizado:j.actualizado||Date.now()};saveMe(me);
     msg.className="msg ok";msg.textContent=prev?"Prognóstico actualizado.":"Prognóstico na urna. Sorte!";
     $("saveBtn").textContent="Actualizar prognóstico";
     load();
