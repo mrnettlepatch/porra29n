@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src data:; connect-src https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
 <title>Porra electoral 29-N</title>
 <meta name="description" content="Porra de escanos para as eleccións xerais do 29 de novembro.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Crect width='96' height='96' rx='20' fill='%2313254a'/%3E%3Cpath d='M18 40H78L74 82H22Z' fill='none' stroke='white' stroke-width='5'/%3E%3Crect x='14' y='34' width='68' height='9' rx='3' fill='white'/%3E%3Cpath d='M37 60L45 68L60 52' fill='none' stroke='white' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
@@ -336,7 +338,7 @@ $("form").addEventListener("submit",async e=>{
     const r=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({id:me.id,token:me.token,...porra})});
     const j=await r.json();
     if(!j.ok){
-      const errs={closed:"O prazo xa rematou.",bad_numbers:"Revisa os números de escanos.",forbidden:"Non se puido actualizar esta porra.",bad_request:"Revisa que todos os campos estean cubertos."};
+      const errs={closed:"O prazo xa rematou.",bad_numbers:"Revisa os números de escanos.",forbidden:"Non se puido actualizar esta porra.",busy:"Hai moito tráfico. Téntao de novo nuns segundos.",full:"Chegouse ao número máximo de porras.",bad_request:"Revisa que todos os campos estean cubertos."};
       return fail(errs[j.error]||"Non se puido gardar. Téntao de novo.");
     }
     const prev=!!me.porra;

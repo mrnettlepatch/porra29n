@@ -1,4 +1,6 @@
 /**
+ * @OnlyCurrentDoc
+ *
  * Porra electoral 29-N — backend en Google Apps Script.
  *
  * Garda as porras nunha folla de Google Sheets e sérveas á web.
@@ -11,6 +13,7 @@
 // Sábado 28/11/2026 ás 23:59:59, hora peninsular (UTC+1)
 const DEADLINE = new Date('2026-11-28T23:59:59+01:00');
 const PARTIES = ['pp', 'psoe', 'vox', 'bng'];
+const MAX_PORRAS = 300; // tope contra envíos masivos
 const HEADERS = ['id', 'token', 'nome', 'conselleria', 'pp', 'psoe', 'vox', 'bng', 'creado', 'actualizado'];
 
 function setup() {
@@ -39,6 +42,13 @@ function resultadoSheet_() {
     sh.getRange('A3').setValue('Mete o resultado na fila 2 (os catro partidos). Déixaa baleira ata entón.');
   }
   return sh;
+}
+
+/** Texto seguro para a folla: sen caracteres de control e sen que poida interpretarse como fórmula. */
+function cleanText_(v, max) {
+  let s = String(v == null ? '' : v).replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, max);
+  if (/^[=+\-@]/.test(s)) s = "'" + s;
+  return s;
 }
 
 function json_(obj) {
@@ -99,27 +109,29 @@ function doPost(e) {
 
   const id = String(d.id || '');
   const token = String(d.token || '');
-  const nome = String(d.nome || '').trim().slice(0, 40);
-  const conselleria = String(d.conselleria || '').trim().slice(0, 60);
-  if (!/^[a-z0-9-]{8,64}$/i.test(id) || token.length < 16 || !nome || !conselleria) {
+  const nome = cleanText_(d.nome, 40);
+  const conselleria = cleanText_(d.conselleria, 60);
+  if (!/^[a-f0-9]{16,64}$/.test(id) || !/^[a-f0-9]{32,128}$/.test(token) || !nome || !conselleria) {
     return json_({ ok: false, error: 'bad_request' });
   }
-  const vals = PARTIES.map(p => Number(d[p]));
+  const vals = PARTIES.map(p => (typeof d[p] === 'number' ? d[p] : NaN));
   if (vals.some(v => !Number.isInteger(v) || v < 0 || v > 350) || vals.reduce((a, b) => a + b, 0) > 350) {
     return json_({ ok: false, error: 'bad_numbers' });
   }
 
   const lock = LockService.getScriptLock();
-  lock.waitLock(10000);
+  if (!lock.tryLock(10000)) return json_({ ok: false, error: 'busy' });
   try {
     const sh = porrasSheet_();
-    const existing = readPorras_().find(o => o.id === id);
+    const porras = readPorras_();
+    const existing = porras.find(o => o.id === id);
     const now = Date.now();
     if (existing) {
       if (String(existing.token) !== token) return json_({ ok: false, error: 'forbidden' });
       sh.getRange(existing.row, 3, 1, 8).setValues([[nome, conselleria, ...vals, existing.creado, now]]);
       return json_({ ok: true, creado: Number(existing.creado), actualizado: now, updated: true });
     }
+    if (porras.length >= MAX_PORRAS) return json_({ ok: false, error: 'full' });
     sh.appendRow([id, token, nome, conselleria, ...vals, now, now]);
     return json_({ ok: true, creado: now, actualizado: now, updated: false });
   } finally {
