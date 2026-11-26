@@ -11,6 +11,7 @@ pequeno script de Google Apps Script.
 
 - Todos comezan con 100 puntos. Cada escano de diferenza co resultado (sumando PP, PSOE, VOX e BNG) resta 1 punto. Mínimo 0.
 - Desempate: quen enviase antes a súa última versión do prognóstico.
+- O resultado publícase a partir do 95 % do escrutinio, cando o administrador boamente poida.
 - Prazo: sábado 28/11 ás 23:59 (hora peninsular). Ata entón ninguén ve as porras dos demais; o script tampouco as devolve.
 - Referencias na táboa: Xerais 2023 e CIS (centro da horquilla).
 
