@@ -5,16 +5,17 @@
  *
  * Garda as porras nunha folla de Google Sheets e sérveas á web.
  * - Pestana "Porras": unha fila por xogador (créase soa).
- * - Pestana "Resultado": mete aquí o resultado (fila 2) cando o saibas.
+ * - Pestana "Resultado": mete aquí o resultado (fila 2: PP, PSOE, VOX, BNG, FA) cando o saibas.
  *
  * Instrucións no README.md do repositorio.
  */
 
 // Sábado 28/11/2026 ás 23:59:59, hora peninsular (UTC+1)
 const DEADLINE = new Date('2026-11-28T23:59:59+01:00');
-const PARTIES = ['pp', 'psoe', 'vox', 'bng'];
+const PARTIES = ['pp', 'psoe', 'vox', 'bng', 'fa'];
+const VERSION = 2;
 const MAX_PORRAS = 300; // tope contra envíos masivos
-const HEADERS = ['id', 'token', 'nome', 'conselleria', 'pp', 'psoe', 'vox', 'bng', 'creado', 'actualizado'];
+const HEADERS = ['id', 'token', 'nome', 'conselleria', 'pp', 'psoe', 'vox', 'bng', 'creado', 'actualizado', 'fa'];
 
 function setup() {
   porrasSheet_();
@@ -30,6 +31,8 @@ function porrasSheet_() {
     sh.setFrozenRows(1);
     sh.getRange('B:B').setFontColor('#aaaaaa'); // o token non é para ler
   }
+  // Follas creadas antes de engadir Frente Amplio: engade a cabeceira da columna K
+  if (sh.getRange(1, HEADERS.length).getValue() !== 'fa') sh.getRange(1, HEADERS.length).setValue('fa');
   return sh;
 }
 
@@ -38,8 +41,12 @@ function resultadoSheet_() {
   let sh = ss.getSheetByName('Resultado');
   if (!sh) {
     sh = ss.insertSheet('Resultado');
-    sh.getRange('A1:D1').setValues([['PP', 'PSOE', 'VOX', 'BNG']]).setFontWeight('bold');
-    sh.getRange('A3').setValue('Mete o resultado na fila 2 (os catro partidos). Déixaa baleira ata entón.');
+    sh.getRange('A1:E1').setValues([['PP', 'PSOE', 'VOX', 'BNG', 'FA']]).setFontWeight('bold');
+    sh.getRange('A3').setValue('Mete o resultado na fila 2 (os cinco partidos). Déixaa baleira ata entón.');
+  }
+  if (sh.getRange('E1').getValue() !== 'FA') {
+    sh.getRange('E1').setValue('FA').setFontWeight('bold');
+    sh.getRange('A3').setValue('Mete o resultado na fila 2 (os cinco partidos). Déixaa baleira ata entón.');
   }
   return sh;
 }
@@ -71,7 +78,7 @@ function readPorras_() {
 }
 
 function readResultado_() {
-  const v = resultadoSheet_().getRange('A2:D2').getValues()[0];
+  const v = resultadoSheet_().getRange('A2:E2').getValues()[0];
   if (v.some(x => x === '' || x === null || isNaN(Number(x)))) return null;
   const r = {};
   PARTIES.forEach((p, i) => (r[p] = Number(v[i])));
@@ -82,6 +89,7 @@ function publicRow_(o) {
   return {
     id: o.id, nome: o.nome, conselleria: o.conselleria,
     pp: Number(o.pp), psoe: Number(o.psoe), vox: Number(o.vox), bng: Number(o.bng),
+    fa: o.fa === '' || o.fa == null ? null : Number(o.fa),
     creado: Number(o.creado) || 0,
     actualizado: Number(o.actualizado) || Number(o.creado) || 0,
   };
@@ -93,6 +101,7 @@ function doGet() {
   const porras = readPorras_();
   return json_({
     ok: true,
+    v: VERSION,
     closed: closed,
     deadline: DEADLINE.getTime(),
     count: porras.length,
@@ -128,12 +137,12 @@ function doPost(e) {
     const now = Date.now();
     if (existing) {
       if (String(existing.token) !== token) return json_({ ok: false, error: 'forbidden' });
-      sh.getRange(existing.row, 3, 1, 8).setValues([[nome, conselleria, ...vals, existing.creado, now]]);
-      return json_({ ok: true, creado: Number(existing.creado), actualizado: now, updated: true });
+      sh.getRange(existing.row, 3, 1, 9).setValues([[nome, conselleria, ...vals.slice(0, 4), existing.creado, now, vals[4]]]);
+      return json_({ ok: true, v: VERSION, creado: Number(existing.creado), actualizado: now, updated: true });
     }
     if (porras.length >= MAX_PORRAS) return json_({ ok: false, error: 'full' });
-    sh.appendRow([id, token, nome, conselleria, ...vals, now, now]);
-    return json_({ ok: true, creado: now, actualizado: now, updated: false });
+    sh.appendRow([id, token, nome, conselleria, ...vals.slice(0, 4), now, now, vals[4]]);
+    return json_({ ok: true, v: VERSION, creado: now, actualizado: now, updated: false });
   } finally {
     lock.releaseLock();
   }

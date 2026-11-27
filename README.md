@@ -9,7 +9,7 @@ pequeno script de Google Apps Script.
 
 ## Regras
 
-- Todos comezan con 100 puntos. Cada escano de diferenza co resultado (sumando PP, PSOE, VOX e BNG) resta 1 punto. Mínimo 0.
+- Todos comezan con 100 puntos. Cada escano de diferenza co resultado (sumando PP, PSOE, VOX, BNG e Frente Amplio) resta 1 punto. Mínimo 0. Se unha porra non ten Frente Amplio, cóntase como 0.
 - Desempate: quen enviase antes a súa última versión do prognóstico.
 - O resultado publícase a partir do 95 % do escrutinio, cando o administrador boamente poida.
 - Prazo: sábado 28/11 ás 23:59 (hora peninsular). Ata entón ninguén ve as porras dos demais; o script tampouco as devolve.
@@ -47,7 +47,7 @@ pequeno script de Google Apps Script.
 
 - **Ver as porras:** pestana **Porras** da folla. A columna `token` é a clave secreta de cada xogador para editar a súa porra; non a compartas.
 - **Borrar duplicados ou bromas:** borra a fila enteira na pestana **Porras**.
-- **Meter o resultado:** na pestana **Resultado**, fila 2, os catro números (PP, PSOE, VOX, BNG). Vale tamén o escrutinio parcial; a web recalcula a clasificación (actualízase cada minuto).
+- **Meter o resultado:** na pestana **Resultado**, fila 2, os cinco números (PP, PSOE, VOX, BNG, FA). Vale tamén o escrutinio parcial; a web recalcula a clasificación (actualízase cada minuto).
 - Cada persoa pode cambiar a súa porra desde o mesmo navegador no que a enviou, ata o peche.
 
 ## Se cambias o script

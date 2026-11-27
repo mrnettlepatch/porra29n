@@ -16,7 +16,7 @@
   --bg:#eef1f6; --card:#ffffff; --fg:#121826; --muted:#5b6475; --line:#dbe0e8; --soft:#f5f7fb;
   --band:#13254a; --band2:#1f3d78; --band-fg:#f4f6fb; --band-muted:#b9c4dc;
   --accent:#1f3d78; --accent-fg:#ffffff; --good:#17804c; --warn:#b4561a;
-  --pp:#1d63b8; --psoe:#d8262e; --bng:#58b3d6; --vox:#62a531;
+  --pp:#1d63b8; --psoe:#d8262e; --bng:#58b3d6; --vox:#62a531; --fa:#c0336e;
   --gold:#c9a227; --silver:#98a2ae; --bronze:#b07a4a;
   --display:"Bricolage Grotesque",system-ui,sans-serif; --body:"Inter",system-ui,sans-serif;
 }
@@ -24,12 +24,12 @@
   --bg:#0d111a; --card:#161c28; --fg:#e7ebf2; --muted:#98a2b4; --line:#283143; --soft:#1b2231;
   --band:#0f1d3b; --band2:#1b3366; --band-fg:#eef2fa; --band-muted:#a6b3cf;
   --accent:#8db0ec; --accent-fg:#0b1222; --good:#5cc48b; --warn:#e8a46e;
-  --pp:#5c99e0; --psoe:#f05a60; --bng:#79c8e6; --vox:#8bc960; color-scheme:dark}}
+  --pp:#5c99e0; --psoe:#f05a60; --bng:#79c8e6; --vox:#8bc960; --fa:#ec7aae; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0d111a; --card:#161c28; --fg:#e7ebf2; --muted:#98a2b4; --line:#283143; --soft:#1b2231;
   --band:#0f1d3b; --band2:#1b3366; --band-fg:#eef2fa; --band-muted:#a6b3cf;
   --accent:#8db0ec; --accent-fg:#0b1222; --good:#5cc48b; --warn:#e8a46e;
-  --pp:#5c99e0; --psoe:#f05a60; --bng:#79c8e6; --vox:#8bc960; color-scheme:dark}
+  --pp:#5c99e0; --psoe:#f05a60; --bng:#79c8e6; --vox:#8bc960; --fa:#ec7aae; color-scheme:dark}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{color-scheme:light}
@@ -66,11 +66,11 @@ input[type=number]{font-variant-numeric:tabular-nums;text-align:center;font-size
 input:disabled{opacity:.6}
 .who{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 @media (max-width:480px){.who{grid-template-columns:minmax(0,1fr)}}
-.parties{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-@media (max-width:480px){.parties{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.parties{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+@media (max-width:600px){.parties{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .party{display:flex;flex-direction:column;gap:6px;border-radius:10px;padding:10px;background:var(--soft);border-top:4px solid var(--c)}
 .party label{font-family:var(--display);font-weight:800;font-size:1rem}
-.party input{background:var(--card)}
+.party input{background:var(--card);margin-top:auto}
 .field{display:flex;flex-direction:column;gap:6px}
 .req{color:var(--warn)}
 .hint{font-size:.83rem;color:var(--muted);margin:0}
@@ -178,12 +178,12 @@ code{font-size:.85em;background:var(--card);padding:1px 5px;border-radius:4px}
     <h2 id="rTitle">Como se puntúa</h2>
     <ul>
       <li>Todos os xogadores comezan con <strong>100 puntos</strong>.</li>
-      <li>Cada escano de diferenza co resultado, sumando os catro partidos, <strong>resta 1 punto</strong>. O mínimo é 0.</li>
+      <li>Cada escano de diferenza co resultado, sumando os cinco partidos, <strong>resta 1 punto</strong>. O mínimo é 0. Se alguén non indica Frente Amplio, cóntaselle como 0.</li>
       <li>Se hai empate a puntos, gaña quen enviase antes a súa última versión do prognóstico.</li>
       <li>O resultado publicarase a partir do 95&nbsp;% do escrutinio, cando o administrador boamente poida.</li>
     </ul>
     <p class="example">Exemplo: falla 3 escanos no PP, 4 no PSOE, 2 en VOX e 1 no BNG → 10 escanos de diferenza → 100 − 10 = <strong>90 puntos</strong>.</p>
-    <p class="hint">No CIS tómase o centro da súa horquilla. As porras dos demais destápanse ao rematar o prazo.</p>
+    <p class="hint">No CIS tómase o centro da súa horquilla. En Xerais 2023, como Frente Amplio cóntase o resultado de Sumar. As porras dos demais destápanse ao rematar o prazo.</p>
     <p class="contact">Calquera consulta ou incidencia técnica podes transmitirma ao meu teléfono persoal: <a href="https://wa.me/34689894566?text=Ola%21%20Te%C3%B1o%20un%20problema%20coa%20web%20da%20porra%20electoral" target="_blank" rel="noopener noreferrer">escríbeme por WhatsApp</a> (+34 689 89 45 66).</p>
   </section>
 </main>
@@ -194,10 +194,10 @@ const API_URL = "https://script.google.com/macros/s/AKfycbw-4UXNQl6iwoi6hlS0jtMI
 // ▲▲▲
 
 const DEADLINE=Date.UTC(2026,10,28,22,59,59); // sábado 28/11/2026 23:59:59 hora peninsular (UTC+1)
-const PARTIES=[{k:"pp",n:"PP",c:"--pp"},{k:"psoe",n:"PSOE",c:"--psoe"},{k:"vox",n:"VOX",c:"--vox"},{k:"bng",n:"BNG",c:"--bng"}];
+const PARTIES=[{k:"pp",n:"PP",c:"--pp"},{k:"psoe",n:"PSOE",c:"--psoe"},{k:"vox",n:"VOX",c:"--vox"},{k:"bng",n:"BNG",c:"--bng"},{k:"fa",n:"FA",l:"Frente Amplio",c:"--fa",opt:true}];
 const REFS=[
-  {id:"ref-2023",nombre:"Xerais 2023",pp:137,psoe:121,vox:33,bng:1},
-  {id:"ref-cis",nombre:"CIS",pp:102,psoe:139,vox:61,bng:3},
+  {id:"ref-2023",nombre:"Xerais 2023",pp:137,psoe:121,vox:33,bng:1,fa:31},
+  {id:"ref-cis",nombre:"CIS",pp:102,psoe:139,vox:61,bng:3,fa:9},
 ].map(r=>({...r,ref:true}));
 const $=id=>document.getElementById(id);
 const configured=/^https:\/\/script\.google\.com\//.test(API_URL);
@@ -216,7 +216,7 @@ function el(tag,props={},...kids){const e=document.createElement(tag);for(const[
 
 for(const p of PARTIES){
   const i=el("input",{type:"number",id:"f_"+p.k,min:"0",max:"350",step:"1",inputMode:"numeric",required:true});
-  const d=el("div",{className:"party"},el("label",{htmlFor:"f_"+p.k},p.n),i);d.style.setProperty("--c",`var(${p.c})`);
+  const d=el("div",{className:"party"},el("label",{htmlFor:"f_"+p.k},p.l||p.n),i);d.style.setProperty("--c",`var(${p.c})`);
   $("partyInputs").append(d);
 }
 
@@ -224,7 +224,7 @@ const int=v=>{const n=Number(v);return v!==""&&Number.isInteger(n)&&n>=0&&n<=350
 const hasResult=()=>resultado&&PARTIES.every(p=>Number.isInteger(resultado[p.k]));
 function score(v){
   if(!hasResult())return null;
-  const fallo=PARTIES.reduce((s,p)=>s+Math.abs(v[p.k]-resultado[p.k]),0);
+  const fallo=PARTIES.reduce((s,p)=>s+Math.abs((Number.isInteger(v[p.k])?v[p.k]:0)-resultado[p.k]),0); // sen prognóstico conta como 0
   return{fallo,falloPP:Math.abs(v.pp-resultado.pp),puntos:Math.max(0,100-fallo)};
 }
 
@@ -297,7 +297,7 @@ function tableOf(list,res){
     const sub=x.ref?"Referencia":x.conselleria;
     if(sub)name.append(el("small",{},sub));
     tr.append(name);
-    for(const p of PARTIES)tr.append(el("td",{className:res&&x[p.k]===resultado[p.k]?"exact":""},x[p.k]));
+    for(const p of PARTIES)tr.append(el("td",{className:res&&x[p.k]===resultado[p.k]?"exact":""},Number.isInteger(x[p.k])?x[p.k]:"–"));
     if(res)tr.append(el("td",{},x.fallo===0?"0 ✓":x.fallo));
     else tr.append(el("td",{className:"time"},x.ref?"":fmtTime(x.actualizado||x.creado)));
     tr.append(el("td",{className:"pts"},res?x.puntos:"–"));
@@ -307,17 +307,19 @@ function tableOf(list,res){
   return el("div",{className:"tablewrap"},t);
 }
 
-let saving=false;
+let saving=false,backendV=2;
 function setFormEnabled(){
   const isClosed=closed();
-  $("saveBtn").disabled=!configured||isClosed||saving;
+  $("saveBtn").disabled=!configured||isClosed||saving||backendV<2;
+  if(backendV<2&&!isClosed)$("formMsg").textContent="A web estase a actualizar. Volve nuns minutos para enviar o teu prognóstico.";
   for(const i of $("form").querySelectorAll("input"))i.disabled=isClosed;
   if(isClosed)$("formMsg").textContent="O prazo rematou o sábado 28 ás 23:59.";
 }
 
 if(me.porra){
   $("nombre").value=me.porra.nome||"";$("conselleria").value=me.porra.conselleria||"";
-  for(const p of PARTIES)$("f_"+p.k).value=me.porra[p.k];
+  for(const p of PARTIES)$("f_"+p.k).value=Number.isInteger(me.porra[p.k])?me.porra[p.k]:"";
+  if(!Number.isInteger(me.porra.fa)){$("formMsg").className="msg err";$("formMsg").textContent="Falta o teu prognóstico para Frente Amplio. Engádeo e preme Actualizar.";$("f_fa").focus()}
   $("saveBtn").textContent="Actualizar prognóstico";
 }
 
@@ -335,7 +337,7 @@ $("form").addEventListener("submit",async e=>{
     if(v===null)return fail(`Pon un número enteiro de escanos para ${p.n} (de 0 a 350).`,$("f_"+p.k));
     porra[p.k]=v;
   }
-  if(PARTIES.reduce((s,p)=>s+porra[p.k],0)>350)return fail("Entre os catro suman máis de 350 escanos.");
+  if(PARTIES.reduce((s,p)=>s+porra[p.k],0)>350)return fail("Entre os cinco suman máis de 350 escanos.");
   saving=true;setFormEnabled();msg.textContent="Gardando…";
   try{
     const r=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({id:me.id,token:me.token,...porra})});
@@ -361,7 +363,8 @@ async function load(){
     const j=await r.json();
     if(!j.ok)throw 0;
     count=j.count||0;
-    porras=(j.porras||[]).filter(x=>PARTIES.every(p=>Number.isInteger(x[p.k])));
+    backendV=j.v||1;
+    porras=(j.porras||[]).filter(x=>PARTIES.every(p=>p.opt||Number.isInteger(x[p.k])));
     resultado=j.resultado||null;
     loaded=true;loadError=false;lastUpdate=Date.now();
   }catch{loadError=true}
