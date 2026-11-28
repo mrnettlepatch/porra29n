@@ -21,7 +21,7 @@
 :root{
   --ink:#000000; --paper:#ffffff; --vaso:#4ac0a8; --vaso-text:#1e7a68; --fume:#eef3f2;
   --bg:var(--paper); --fg:#0d1110; --muted:#58625f; --line:#d5dfdc; --surface:var(--fume);
-  --hero:var(--ink); --hero-fg:#ffffff; --hero-muted:#b4cdc7;
+  --hero:var(--vaso); --hero-fg:#000000; --hero-muted:#0b3a31;
   --good:#17804c; --warn:#b0501a;
   --pp:#1d63b8; --psoe:#d8262e; --vox:#62a531; --bng:#58b3d6; --fa:#c0336e;
   --gold:#c9a227; --silver:#98a2ae; --bronze:#b07a4a;
@@ -50,13 +50,13 @@ img{max-width:100%}
 .hero h1{font-family:var(--display);font-weight:400;font-size:clamp(3rem,10vw,5.4rem);line-height:.92;margin:0;letter-spacing:.005em;max-width:9ch}
 .hero .lede{margin:18px 0 0;color:var(--hero-muted);max-width:34ch;font-size:1.05rem}
 .clock{margin-top:34px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
-.clock b{font-family:var(--body);font-stretch:75%;font-weight:800;font-size:clamp(2.4rem,7vw,3.4rem);line-height:1;color:var(--vaso);font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.clock b{font-family:var(--body);font-stretch:75%;font-weight:800;font-size:clamp(2.4rem,7vw,3.4rem);line-height:1;color:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:.01em}
 .clock span{color:var(--hero-muted);max-width:22ch;line-height:1.35}
 .clock span strong{color:var(--hero-fg);font-weight:600;display:block}
-.seal{position:absolute;right:max(20px,env(safe-area-inset-right,0px));bottom:-96px;width:232px;height:232px;border-radius:50%;box-shadow:0 0 0 8px var(--bg)}
+.seal{position:absolute;right:max(20px,env(safe-area-inset-right,0px));bottom:-96px;width:232px;height:232px;border-radius:50%;box-shadow:0 0 0 3px var(--ink)}
 main.wrap{padding-top:124px;padding-bottom:72px;display:flex;flex-direction:column;gap:64px}
 @media (max-width:700px){
-  .seal{position:static;width:112px;height:112px;margin-bottom:22px;box-shadow:none}
+  .seal{position:static;width:112px;height:112px;margin-bottom:22px}
   main.wrap{padding-top:36px;gap:52px}
 }
 
