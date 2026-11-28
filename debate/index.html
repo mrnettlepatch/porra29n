@@ -77,6 +77,7 @@ input:hover:not(:disabled){border-color:var(--muted)}
 input:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid var(--vaso);outline-offset:2px}
 input:disabled{opacity:.6}
 .field{display:flex;flex-direction:column;gap:6px}
+.req{font-weight:500;color:var(--muted);font-size:.88rem}
 .tally{display:flex;flex-direction:column;border-top:1.5px solid var(--line)}
 .party{display:grid;grid-template-columns:6px minmax(0,1fr) 96px;align-items:center;gap:14px;padding:8px 0;border-bottom:1.5px solid var(--line)}
 .party::before{content:"";align-self:stretch;border-radius:3px;background:var(--c)}
@@ -143,7 +144,7 @@ tr.real td{font-weight:800;background:var(--surface)}
         <span class="pill open" id="statusPill">Aberta</span>
       </div>
       <div class="field">
-        <label for="nombre">Nome</label>
+        <label for="nombre">Nome <span class="req">(obrigatorio)</span></label>
         <input type="text" id="nombre" maxlength="40" autocomplete="name" required placeholder="Como queres saír na táboa">
       </div>
       <div>
@@ -153,7 +154,7 @@ tr.real td{font-weight:800;background:var(--surface)}
         <button type="submit" id="saveBtn">Enviar prognóstico</button>
         <p class="msg" id="formMsg" role="status"></p>
       </div>
-      <p class="hint">Podes cambialo desde este mesmo navegador ata o sábado 28 ás 23:59.</p>
+      <p class="hint">Todos os campos son obrigatorios. Podes cambialo desde este mesmo navegador ata o sábado 28 ás 23:59.</p>
     </form>
   </section>
 
