@@ -53,3 +53,12 @@ pequeno script de Google Apps Script.
 ## Se cambias o script
 
 Despois de editar `Codigo.gs` en Apps Script: **Implementar → Xestionar implementacións → lapis → Versión: Nova versión → Implementar**. Así o enderezo `/exec` segue sendo o mesmo.
+
+## Porra do club de debate (`/debate/`)
+
+Segunda porra, independente da principal: mesmas regras e prazo, pero só pide o nome.
+
+- Web: `https://mrnettlepatch.github.io/porra29n/debate/` (`debate/index.html`).
+- Script: [`debate/Codigo.gs`](debate/Codigo.gs), nunha folla de Google **distinta** da principal.
+- Posta en marcha: os mesmos pasos de arriba, pegando `debate/Codigo.gs` e poñendo o enderezo `/exec` en `debate/index.html`.
+- Cada navegador garda a súa identidade por separado para cada porra, así que unha persoa pode participar nas dúas.

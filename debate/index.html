@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="gl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src data:; connect-src https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Porra electoral 29-N · Club de debate</title>
+<meta name="description" content="Porra de escanos para as eleccións xerais do 29 de novembro.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Crect width='96' height='96' rx='20' fill='%2313254a'/%3E%3Cpath d='M18 40H78L74 82H22Z' fill='none' stroke='white' stroke-width='5'/%3E%3Crect x='14' y='34' width='68' height='9' rx='3' fill='white'/%3E%3Cpath d='M37 60L45 68L60 52' fill='none' stroke='white' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: banda de cabeceira coa urna e a conta atrás; debaixo unha columna de tarxetas tipo papeleta */
+:root{
+  --bg:#eef1f6; --card:#ffffff; --fg:#121826; --muted:#5b6475; --line:#dbe0e8; --soft:#f5f7fb;
+  --band:#13254a; --band2:#1f3d78; --band-fg:#f4f6fb; --band-muted:#b9c4dc;
+  --accent:#1f3d78; --accent-fg:#ffffff; --good:#17804c; --warn:#b4561a;
+  --pp:#1d63b8; --psoe:#d8262e; --bng:#58b3d6; --vox:#62a531; --fa:#c0336e;
+  --gold:#c9a227; --silver:#98a2ae; --bronze:#b07a4a;
+  --display:"Bricolage Grotesque",system-ui,sans-serif; --body:"Inter",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0d111a; --card:#161c28; --fg:#e7ebf2; --muted:#98a2b4; --line:#283143; --soft:#1b2231;
+  --band:#0f1d3b; --band2:#1b3366; --band-fg:#eef2fa; --band-muted:#a6b3cf;
+  --accent:#8db0ec; --accent-fg:#0b1222; --good:#5cc48b; --warn:#e8a46e;
+  --pp:#5c99e0; --psoe:#f05a60; --bng:#79c8e6; --vox:#8bc960; --fa:#ec7aae; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d111a; --card:#161c28; --fg:#e7ebf2; --muted:#98a2b4; --line:#283143; --soft:#1b2231;
+  --band:#0f1d3b; --band2:#1b3366; --band-fg:#eef2fa; --band-muted:#a6b3cf;
+  --accent:#8db0ec; --accent-fg:#0b1222; --good:#5cc48b; --warn:#e8a46e;
+  --pp:#5c99e0; --psoe:#f05a60; --bng:#79c8e6; --vox:#8bc960; --fa:#ec7aae; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{color-scheme:light}
+body{margin:0;-webkit-text-size-adjust:100%}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+img{max-width:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5}
+.inner{max-width:780px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.hero{background:linear-gradient(135deg,var(--band),var(--band2));color:var(--band-fg);
+  margin-top:calc(-1 * env(safe-area-inset-top,0px));padding-top:calc(env(safe-area-inset-top,0px) + 32px);padding-bottom:72px}
+.brand{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.logo{width:84px;height:84px;flex:none}
+.brand h1{font-family:var(--display);font-weight:800;font-size:clamp(2rem,6vw,2.8rem);line-height:1;margin:0;letter-spacing:-.02em}
+.brand p{margin:6px 0 0;color:var(--band-muted)}
+.countdown{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap;align-items:stretch}
+.cd-box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:8px 14px;min-width:68px;text-align:center}
+.cd-box b{display:block;font-family:var(--display);font-size:1.6rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.cd-box span{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--band-muted)}
+.cd-label{display:flex;flex-direction:column;justify-content:center;font-size:.9rem;color:var(--band-muted);padding-left:4px}
+.cd-label strong{color:var(--band-fg)}
+main.inner{margin-top:-48px;padding-bottom:64px;display:flex;flex-direction:column;gap:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:16px;box-shadow:0 1px 2px rgba(10,20,40,.04)}
+.card.lead{box-shadow:0 12px 32px -12px rgba(10,20,50,.35)}
+h2{font-family:var(--display);font-weight:800;font-size:1.3rem;margin:0;letter-spacing:-.01em}
+.head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:99px}
+.pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.pill.open{color:var(--good);background:color-mix(in srgb,var(--good) 12%,transparent)}
+.pill.closed{color:var(--warn);background:color-mix(in srgb,var(--warn) 12%,transparent)}
+label{font-weight:600;font-size:.88rem}
+input[type=text],input[type=number]{font:inherit;color:var(--fg);background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:10px 12px;width:100%}
+input:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+input[type=number]{font-variant-numeric:tabular-nums;text-align:center;font-size:1.35rem;font-weight:700;font-family:var(--display);padding:10px 6px}
+input:disabled{opacity:.6}
+.who{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:480px){.who{grid-template-columns:minmax(0,1fr)}}
+.parties{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+@media (max-width:600px){.parties{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.party{display:flex;flex-direction:column;gap:6px;border-radius:10px;padding:10px;background:var(--soft);border-top:4px solid var(--c)}
+.party label{font-family:var(--display);font-weight:800;font-size:1rem}
+.party input{background:var(--card);margin-top:auto}
+.field{display:flex;flex-direction:column;gap:6px}
+.req{color:var(--warn)}
+.hint{font-size:.83rem;color:var(--muted);margin:0}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+button{font:inherit;font-weight:600;border-radius:8px;padding:10px 18px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--fg)}
+button.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);padding:12px 22px}
+button:disabled{opacity:.5;cursor:not-allowed}
+button.link{border:none;background:none;padding:2px 4px;color:var(--muted);font-weight:500;text-decoration:underline}
+.msg{font-size:.88rem;margin:0}
+.msg.ok{color:var(--good)} .msg.err{color:var(--warn)}
+.notice{border-radius:10px;padding:12px 14px;background:var(--soft);border:1px solid var(--line);font-size:.9rem}
+.sealed{display:flex;align-items:center;gap:14px;padding:14px 18px;border:1px dashed var(--line);border-radius:12px;background:var(--soft)}
+.sealed b{font-family:var(--display);font-size:2rem;line-height:1}
+.tablewrap{overflow-x:auto;margin:0 -4px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{padding:10px 8px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+th.p{border-bottom:3px solid var(--c)}
+td.name,th.name{text-align:left;white-space:normal;min-width:140px}
+td.name small{display:block;color:var(--muted);font-size:.78rem;line-height:1.3}
+td.time{color:var(--muted);font-size:.8rem}
+td.pos{font-family:var(--display);font-weight:800;width:40px}
+td.pts{font-family:var(--display);font-weight:800;font-size:1.1rem}
+tr.me td{background:color-mix(in srgb,var(--accent) 9%,transparent)}
+tr.ref td{color:var(--muted)}
+tr.ref td.name{font-style:italic}
+tr.real td{font-weight:800;background:var(--soft)}
+.medal{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;color:#fff;font-size:.85rem}
+.m1{background:var(--gold)} .m2{background:var(--silver)} .m3{background:var(--bronze)}
+.exact{color:var(--good);font-weight:800}
+.empty{color:var(--muted);text-align:center;padding:20px 8px}
+.rules ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.example{font-variant-numeric:tabular-nums;background:var(--soft);border-radius:10px;padding:10px 14px;font-size:.88rem}
+.admin{border-style:dashed}
+code{font-size:.85em;background:var(--card);padding:1px 5px;border-radius:4px}
+.contact{margin:0;padding-top:12px;border-top:1px solid var(--line);font-size:.9rem}
+.contact a{color:var(--accent);font-weight:600}
+.foot{font-size:.8rem;color:var(--muted);margin:0}
+@media (prefers-reduced-motion:no-preference){.env{animation:drop 2.4s ease-in-out infinite}}
+@keyframes drop{0%,15%{transform:translateY(-6px)}55%,100%{transform:translateY(10px)}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="inner">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 96 96" role="img" aria-label="Urna electoral">
+        <defs><clipPath id="slotclip"><rect x="0" y="0" width="96" height="41"/></clipPath></defs>
+        <g clip-path="url(#slotclip)"><g class="env">
+          <rect x="34" y="8" width="28" height="34" rx="2" fill="#ffffff"/>
+          <path d="M34 10 L48 22 L62 10" fill="none" stroke="#9fb0d0" stroke-width="2"/>
+          <rect x="41" y="27" width="14" height="4" rx="1" fill="#d8262e"/>
+        </g></g>
+        <path d="M14 40 H82 L78 86 H18 Z" fill="#ffffff" fill-opacity=".14" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/>
+        <rect x="10" y="36" width="76" height="8" rx="2.5" fill="#ffffff"/>
+        <rect x="30" y="38.5" width="36" height="3" rx="1.5" fill="#13254a"/>
+        <path d="M37 64 L45 72 L60 55" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <h1>Porra electoral</h1>
+        <p>Xerais do 29 de novembro</p>
+      </div>
+    </div>
+    <div class="countdown" id="countdown" aria-live="polite"></div>
+  </div>
+</header>
+
+<main class="inner">
+  <div class="notice" id="configNotice" hidden><strong>Falta configurar a web.</strong> Pega o enderezo da aplicación web de Apps Script en <code>API_URL</code>, dentro de <code>index.html</code>. Mira o README do repositorio.</div>
+
+  <section class="card lead" id="formCard" aria-labelledby="fTitle">
+    <div class="head">
+      <h2 id="fTitle">O teu prognóstico</h2>
+      <span class="pill open" id="statusPill">Aberta</span>
+    </div>
+    <form id="form" novalidate style="display:flex;flex-direction:column;gap:16px">
+      <div class="field">
+        <label for="nombre">Nome <span class="req" aria-hidden="true">*</span></label>
+        <input type="text" id="nombre" maxlength="40" autocomplete="name" required placeholder="Como queres saír na táboa">
+      </div>
+      <div class="parties" id="partyInputs"></div>
+      <p class="hint">Todos os campos son obrigatorios. Podes cambiar o teu prognóstico desde este mesmo navegador ata o sábado 28 ás 23:59.</p>
+      <div class="row">
+        <button type="submit" class="primary" id="saveBtn">Enviar prognóstico</button>
+        <p class="msg" id="formMsg" role="status"></p>
+      </div>
+    </form>
+  </section>
+
+  <section class="card" aria-labelledby="tTitle">
+    <div class="head">
+      <h2 id="tTitle">Clasificación</h2>
+      <span class="hint" id="updated"></span>
+    </div>
+    <div id="board" style="display:flex;flex-direction:column;gap:14px"><p class="hint">Cargando porras…</p></div>
+  </section>
+
+  <section class="card rules" aria-labelledby="rTitle">
+    <h2 id="rTitle">Como se puntúa</h2>
+    <ul>
+      <li>Todos os xogadores comezan con <strong>100 puntos</strong>.</li>
+      <li>Cada escano de diferenza co resultado, sumando os cinco partidos, <strong>resta 1 punto</strong>. O mínimo é 0. Se alguén non indica Frente Amplio, cóntaselle como 0.</li>
+      <li>Se hai empate a puntos, gaña quen enviase antes a súa última versión do prognóstico.</li>
+      <li>O resultado publicarase a partir do 95&nbsp;% do escrutinio, cando o administrador boamente poida.</li>
+    </ul>
+    <p class="example">Exemplo: falla 3 escanos no PP, 4 no PSOE, 2 en VOX e 1 no BNG → 10 escanos de diferenza → 100 − 10 = <strong>90 puntos</strong>.</p>
+    <p class="hint">No CIS tómase o centro da súa horquilla. En Xerais 2023, como Frente Amplio cóntase o resultado de Sumar. As porras dos demais destápanse ao rematar o prazo.</p>
+    <p class="contact">Calquera consulta ou incidencia técnica podes transmitirma ao meu teléfono persoal: <a href="https://wa.me/34689894566?text=Ola%21%20Te%C3%B1o%20un%20problema%20coa%20web%20da%20porra%20electoral" target="_blank" rel="noopener noreferrer">escríbeme por WhatsApp</a> (+34 689 89 45 66).</p>
+  </section>
+</main>
+
+<script>
+// ▼▼▼ PEGA AQUÍ o enderezo da aplicación web de Apps Script (remata en /exec)
+const API_URL = "PEGA_AQUI_O_ENDEREZO_DE_APPS_SCRIPT";
+// ▲▲▲
+
+const DEADLINE=Date.UTC(2026,10,28,22,59,59); // sábado 28/11/2026 23:59:59 hora peninsular (UTC+1)
+const PARTIES=[{k:"pp",n:"PP",c:"--pp"},{k:"psoe",n:"PSOE",c:"--psoe"},{k:"vox",n:"VOX",c:"--vox"},{k:"bng",n:"BNG",c:"--bng"},{k:"fa",n:"FA",l:"Frente Amplio",c:"--fa",opt:true}];
+const REFS=[
+  {id:"ref-2023",nombre:"Xerais 2023",pp:137,psoe:121,vox:33,bng:1,fa:31},
+  {id:"ref-cis",nombre:"CIS",pp:102,psoe:139,vox:61,bng:3,fa:9},
+].map(r=>({...r,ref:true}));
+const $=id=>document.getElementById(id);
+const configured=/^https:\/\/script\.google\.com\//.test(API_URL);
+let porras=[],count=0,resultado=null,loaded=false,loadError=false,lastUpdate=0;
+const closed=()=>Date.now()>DEADLINE;
+
+/* identidade local: un id e un token secreto gardados neste navegador */
+const STORE="porra29n-debate"; // distinta da porra principal (mesmo dominio)
+function loadMe(){try{return JSON.parse(localStorage.getItem(STORE))||null}catch{return null}}
+function saveMe(m){try{localStorage.setItem(STORE,JSON.stringify(m))}catch{}}
+function rand(n){const a=new Uint8Array(n);crypto.getRandomValues(a);return Array.from(a,b=>b.toString(16).padStart(2,"0")).join("")}
+let me=loadMe();
+if(!me||!me.id||!me.token){me={id:rand(12),token:rand(24),porra:null};saveMe(me)}
+
+function el(tag,props={},...kids){const e=document.createElement(tag);for(const[k,v]of Object.entries(props)){if(k==="style")e.style.cssText=v;else if(k in e)e[k]=v;else e.setAttribute(k,v)}for(const c of kids)if(c!=null)e.append(c instanceof Node?c:String(c));return e}
+
+for(const p of PARTIES){
+  const i=el("input",{type:"number",id:"f_"+p.k,min:"0",max:"350",step:"1",inputMode:"numeric",required:true});
+  const d=el("div",{className:"party"},el("label",{htmlFor:"f_"+p.k},p.l||p.n),i);d.style.setProperty("--c",`var(${p.c})`);
+  $("partyInputs").append(d);
+}
+
+const int=v=>{const n=Number(v);return v!==""&&Number.isInteger(n)&&n>=0&&n<=350?n:null};
+const hasResult=()=>resultado&&PARTIES.every(p=>Number.isInteger(resultado[p.k]));
+function score(v){
+  if(!hasResult())return null;
+  const fallo=PARTIES.reduce((s,p)=>s+Math.abs((Number.isInteger(v[p.k])?v[p.k]:0)-resultado[p.k]),0); // sen prognóstico conta como 0
+  return{fallo,falloPP:Math.abs(v.pp-resultado.pp),puntos:Math.max(0,100-fallo)};
+}
+
+/* conta atrás */
+function tickCountdown(){
+  const c=$("countdown");c.textContent="";
+  const left=DEADLINE-Date.now();
+  if(left<=0){c.append(el("div",{className:"cd-label"},el("strong",{},"Prazo pechado"),"Xa se poden ver todas as porras."));return false}
+  const d=Math.floor(left/864e5),h=Math.floor(left/36e5)%24,m=Math.floor(left/6e4)%60,s=Math.floor(left/1e3)%60;
+  for(const[v,u]of[[d,"días"],[h,"horas"],[m,"min"],[s,"seg"]])c.append(el("div",{className:"cd-box"},el("b",{},String(v).padStart(2,"0")),el("span",{},u)));
+  c.append(el("div",{className:"cd-label"},el("strong",{},"para pechar a porra"),"Sábado 28 ás 23:59"));
+  return true;
+}
+let wasOpen=!closed();
+tickCountdown();
+setInterval(()=>{const open=tickCountdown();if(wasOpen&&!open){wasOpen=false;render();load()}},1000);
+
+/* filas: referencias sempre; xogadores tras o peche (antes, só a túa) */
+function rows(){
+  let players=porras;
+  if(!closed())players=me.porra?[{...me.porra,id:me.id}]:[];
+  const all=[...REFS,...players].map(x=>({...x,...(score(x)||{})}));
+  if(hasResult())all.sort((a,b)=>b.puntos-a.puntos||((a.ref?1:0)-(b.ref?1:0))||(a.actualizado||a.creado||0)-(b.actualizado||b.creado||0));
+  else all.sort((a,b)=>(b.ref?1:0)-(a.ref?1:0)||(a.actualizado||a.creado||0)-(b.actualizado||b.creado||0));
+  return all;
+}
+const fmtTime=t=>t?new Date(t).toLocaleString("gl-ES",{weekday:"short",day:"numeric",hour:"2-digit",minute:"2-digit",hourCycle:"h23",timeZone:"Europe/Madrid"}):"";
+
+function render(){
+  const isClosed=closed();
+  const pill=$("statusPill");pill.textContent=isClosed?"Pechada":"Aberta";pill.className="pill "+(isClosed?"closed":"open");
+  setFormEnabled();
+  $("updated").textContent=lastUpdate?"Actualizado ás "+new Date(lastUpdate).toLocaleTimeString("gl-ES",{hour:"2-digit",minute:"2-digit",hourCycle:"h23"}):"";
+  const board=$("board");board.textContent="";
+  const res=hasResult();
+  if(!isClosed&&loaded){
+    board.append(el("div",{className:"sealed"},el("b",{},count),
+      el("div",{},el("strong",{},count===1?"porra na urna":"porras na urna"),
+        el("p",{className:"hint"},"As porras dos demais destápanse o sábado 28 ás 23:59. Mentres, aquí tes as referencias e a túa."))));
+  }
+  board.append(el("p",{className:"hint"},res?"Ordenado por puntos. As referencias en cursiva non optan a premio."
+    :isClosed?"Por orde de inscrición. Os puntos aparecen cando a organización meta o resultado."
+    :"Os puntos aparecen cando a organización meta o resultado."));
+  board.append(tableOf(rows(),res));
+  if(!configured)board.append(el("p",{className:"msg err"},"A web aínda non está conectada á folla de cálculo."));
+  else if(loadError)board.append(el("p",{className:"msg err"},"Non se puideron cargar as porras. Tentarase de novo en breve."));
+  else if(!loaded)board.append(el("p",{className:"hint"},"Cargando porras…"));
+}
+
+function tableOf(list,res){
+  const t=el("table");
+  const hr=el("tr",{},el("th",{},"#"),el("th",{className:"name"},"Xogador"));
+  for(const p of PARTIES){const th=el("th",{className:"p"},p.n);th.style.setProperty("--c",`var(${p.c})`);hr.append(th)}
+  hr.append(el("th",{},res?"Fallo":"Inscrición"),el("th",{},"Puntos"));
+  t.append(el("thead",{},hr));
+  const tb=el("tbody");
+  if(res){
+    const tr=el("tr",{className:"real"},el("td"),el("td",{className:"name"},"Resultado"));
+    for(const p of PARTIES)tr.append(el("td",{},resultado[p.k]));
+    tr.append(el("td"),el("td"));
+    tb.append(tr);
+  }
+  let pos=0;
+  for(const x of list){
+    const mine=x.id===me.id;
+    const tr=el("tr",{className:x.ref?"ref":mine?"me":""});
+    if(x.ref)tr.append(el("td",{className:"pos"},"–"));
+    else{pos++;tr.append(el("td",{className:"pos"},res&&pos<=3?el("span",{className:"medal m"+pos},pos):pos))}
+    const name=el("td",{className:"name"},(x.nome||x.nombre||"Sen nome")+(mine?" (ti)":""));
+    const sub=x.ref?"Referencia":"";
+    if(sub)name.append(el("small",{},sub));
+    tr.append(name);
+    for(const p of PARTIES)tr.append(el("td",{className:res&&x[p.k]===resultado[p.k]?"exact":""},Number.isInteger(x[p.k])?x[p.k]:"–"));
+    if(res)tr.append(el("td",{},x.fallo===0?"0 ✓":x.fallo));
+    else tr.append(el("td",{className:"time"},x.ref?"":fmtTime(x.actualizado||x.creado)));
+    tr.append(el("td",{className:"pts"},res?x.puntos:"–"));
+    tb.append(tr);
+  }
+  t.append(tb);
+  return el("div",{className:"tablewrap"},t);
+}
+
+let saving=false,backendV=2;
+function setFormEnabled(){
+  const isClosed=closed();
+  $("saveBtn").disabled=!configured||isClosed||saving||backendV<2;
+  if(backendV<2&&!isClosed)$("formMsg").textContent="A web estase a actualizar. Volve nuns minutos para enviar o teu prognóstico.";
+  for(const i of $("form").querySelectorAll("input"))i.disabled=isClosed;
+  if(isClosed)$("formMsg").textContent="O prazo rematou o sábado 28 ás 23:59.";
+}
+
+if(me.porra){
+  $("nombre").value=me.porra.nome||"";
+  for(const p of PARTIES)$("f_"+p.k).value=Number.isInteger(me.porra[p.k])?me.porra[p.k]:"";
+  if(!Number.isInteger(me.porra.fa)){$("formMsg").className="msg err";$("formMsg").textContent="Falta o teu prognóstico para Frente Amplio. Engádeo e preme Actualizar.";$("f_fa").focus()}
+  $("saveBtn").textContent="Actualizar prognóstico";
+}
+
+$("form").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const msg=$("formMsg");msg.className="msg";
+  const fail=(t,f)=>{msg.className="msg err";msg.textContent=t;if(f)f.focus()};
+  if(closed()){setFormEnabled();return}
+  const nome=$("nombre").value.trim();
+  if(!nome)return fail("Escribe o teu nome.",$("nombre"));
+  const porra={nome};
+  for(const p of PARTIES){
+    const v=int($("f_"+p.k).value);
+    if(v===null)return fail(`Pon un número enteiro de escanos para ${p.n} (de 0 a 350).`,$("f_"+p.k));
+    porra[p.k]=v;
+  }
+  if(PARTIES.reduce((s,p)=>s+porra[p.k],0)>350)return fail("Entre os cinco suman máis de 350 escanos.");
+  saving=true;setFormEnabled();msg.textContent="Gardando…";
+  try{
+    const r=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({id:me.id,token:me.token,...porra})});
+    const j=await r.json();
+    if(!j.ok){
+      const errs={closed:"O prazo xa rematou.",bad_numbers:"Revisa os números de escanos.",forbidden:"Non se puido actualizar esta porra.",busy:"Hai moito tráfico. Téntao de novo nuns segundos.",full:"Chegouse ao número máximo de porras.",bad_request:"Revisa que todos os campos estean cubertos."};
+      return fail(errs[j.error]||"Non se puido gardar. Téntao de novo.");
+    }
+    const prev=!!me.porra;
+    me.porra={...porra,creado:j.creado,actualizado:j.actualizado||Date.now()};saveMe(me);
+    msg.className="msg ok";msg.textContent=prev?"Prognóstico actualizado.":"Prognóstico na urna. Sorte!";
+    $("saveBtn").textContent="Actualizar prognóstico";
+    load();
+  }catch{
+    fail("Non se puido conectar. Revisa a conexión e téntao de novo.");
+  }finally{saving=false;setFormEnabled();render()}
+});
+
+async function load(){
+  if(!configured){render();return}
+  try{
+    const r=await fetch(API_URL,{cache:"no-store"});
+    const j=await r.json();
+    if(!j.ok)throw 0;
+    count=j.count||0;
+    backendV=j.v||1;
+    porras=(j.porras||[]).filter(x=>PARTIES.every(p=>p.opt||Number.isInteger(x[p.k])));
+    resultado=j.resultado||null;
+    loaded=true;loadError=false;lastUpdate=Date.now();
+  }catch{loadError=true}
+  render();
+}
+
+$("configNotice").hidden=configured;
+render();load();
+setInterval(()=>{if(!document.hidden)load()},60000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&Date.now()-lastUpdate>30000)load()});
+</script>
+</body>
+</html>
