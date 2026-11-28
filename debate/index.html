@@ -3,32 +3,33 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src data:; connect-src https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Porra electoral 29-N · Club de debate</title>
-<meta name="description" content="Porra de escanos para as eleccións xerais do 29 de novembro.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Crect width='96' height='96' rx='20' fill='%2313254a'/%3E%3Cpath d='M18 40H78L74 82H22Z' fill='none' stroke='white' stroke-width='5'/%3E%3Crect x='14' y='34' width='68' height='9' rx='3' fill='white'/%3E%3Cpath d='M37 60L45 68L60 52' fill='none' stroke='white' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<meta name="description" content="Porra do Club de Debate Compostela para as eleccións xerais do 29 de novembro.">
+<link rel="icon" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600;700&display=swap">
 <style>
 /* Layout: banda de cabeceira coa urna e a conta atrás; debaixo unha columna de tarxetas tipo papeleta */
+/* Paleta do Club de Debate Compostela: negro, branco e o turquesa do logo */
 :root{
-  --bg:#eef1f6; --card:#ffffff; --fg:#121826; --muted:#5b6475; --line:#dbe0e8; --soft:#f5f7fb;
-  --band:#13254a; --band2:#1f3d78; --band-fg:#f4f6fb; --band-muted:#b9c4dc;
-  --accent:#1f3d78; --accent-fg:#ffffff; --good:#17804c; --warn:#b4561a;
+  --bg:#f1f5f4; --card:#ffffff; --fg:#0e1110; --muted:#56625f; --line:#d8e2df; --soft:#f4f8f7;
+  --band:#000000; --band2:#0c1412; --band-fg:#ffffff; --band-muted:#a8c9c1;
+  --accent:#4ac0a8; --accent-fg:#000000; --link:#1d7a67; --good:#17804c; --warn:#b4561a;
   --pp:#1d63b8; --psoe:#d8262e; --bng:#58b3d6; --vox:#62a531; --fa:#c0336e;
   --gold:#c9a227; --silver:#98a2ae; --bronze:#b07a4a;
-  --display:"Bricolage Grotesque",system-ui,sans-serif; --body:"Inter",system-ui,sans-serif;
+  --display:"Bricolage Grotesque",system-ui,sans-serif; --serif:"Abril Fatface",Georgia,"Times New Roman",serif; --body:"Inter",system-ui,sans-serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0d111a; --card:#161c28; --fg:#e7ebf2; --muted:#98a2b4; --line:#283143; --soft:#1b2231;
-  --band:#0f1d3b; --band2:#1b3366; --band-fg:#eef2fa; --band-muted:#a6b3cf;
-  --accent:#8db0ec; --accent-fg:#0b1222; --good:#5cc48b; --warn:#e8a46e;
+  --bg:#080a0a; --card:#121716; --fg:#eef4f2; --muted:#92a39f; --line:#25302d; --soft:#18201e;
+  --band:#000000; --band2:#0c1412; --band-fg:#ffffff; --band-muted:#a8c9c1;
+  --accent:#4ac0a8; --accent-fg:#000000; --link:#6fd6c1; --good:#5cc48b; --warn:#e8a46e;
   --pp:#5c99e0; --psoe:#f05a60; --bng:#79c8e6; --vox:#8bc960; --fa:#ec7aae; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0d111a; --card:#161c28; --fg:#e7ebf2; --muted:#98a2b4; --line:#283143; --soft:#1b2231;
-  --band:#0f1d3b; --band2:#1b3366; --band-fg:#eef2fa; --band-muted:#a6b3cf;
-  --accent:#8db0ec; --accent-fg:#0b1222; --good:#5cc48b; --warn:#e8a46e;
+  --bg:#080a0a; --card:#121716; --fg:#eef4f2; --muted:#92a39f; --line:#25302d; --soft:#18201e;
+  --band:#000000; --band2:#0c1412; --band-fg:#ffffff; --band-muted:#a8c9c1;
+  --accent:#4ac0a8; --accent-fg:#000000; --link:#6fd6c1; --good:#5cc48b; --warn:#e8a46e;
   --pp:#5c99e0; --psoe:#f05a60; --bng:#79c8e6; --vox:#8bc960; --fa:#ec7aae; color-scheme:dark}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -38,14 +39,15 @@ body{margin:0;-webkit-text-size-adjust:100%}
 img{max-width:100%}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5}
 .inner{max-width:780px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.hero{background:linear-gradient(135deg,var(--band),var(--band2));color:var(--band-fg);
+.hero{background:linear-gradient(160deg,var(--band) 55%,var(--band2));border-bottom:4px solid var(--accent);color:var(--band-fg);
   margin-top:calc(-1 * env(safe-area-inset-top,0px));padding-top:calc(env(safe-area-inset-top,0px) + 32px);padding-bottom:72px}
 .brand{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
-.logo{width:84px;height:84px;flex:none}
-.brand h1{font-family:var(--display);font-weight:800;font-size:clamp(2rem,6vw,2.8rem);line-height:1;margin:0;letter-spacing:-.02em}
+.logo{width:104px;height:104px;flex:none;border-radius:50%;display:block}
+.brand h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.1rem,6.5vw,3rem);line-height:1;margin:0;letter-spacing:.01em}
+.club{display:block;font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
 .brand p{margin:6px 0 0;color:var(--band-muted)}
 .countdown{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap;align-items:stretch}
-.cd-box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:8px 14px;min-width:68px;text-align:center}
+.cd-box{background:rgba(74,192,168,.10);border:1px solid rgba(74,192,168,.45);border-radius:10px;padding:8px 14px;min-width:68px;text-align:center}
 .cd-box b{display:block;font-family:var(--display);font-size:1.6rem;line-height:1.1;font-variant-numeric:tabular-nums}
 .cd-box span{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--band-muted)}
 .cd-label{display:flex;flex-direction:column;justify-content:center;font-size:.9rem;color:var(--band-muted);padding-left:4px}
@@ -53,7 +55,7 @@ body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px
 main.inner{margin-top:-48px;padding-bottom:64px;display:flex;flex-direction:column;gap:20px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:16px;box-shadow:0 1px 2px rgba(10,20,40,.04)}
 .card.lead{box-shadow:0 12px 32px -12px rgba(10,20,50,.35)}
-h2{font-family:var(--display);font-weight:800;font-size:1.3rem;margin:0;letter-spacing:-.01em}
+h2{font-family:var(--serif);font-weight:400;font-size:1.45rem;margin:0;letter-spacing:-.01em}
 .head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .pill{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:99px}
 .pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
@@ -107,7 +109,7 @@ tr.real td{font-weight:800;background:var(--soft)}
 .admin{border-style:dashed}
 code{font-size:.85em;background:var(--card);padding:1px 5px;border-radius:4px}
 .contact{margin:0;padding-top:12px;border-top:1px solid var(--line);font-size:.9rem}
-.contact a{color:var(--accent);font-weight:600}
+.contact a{color:var(--link);font-weight:600}
 .foot{font-size:.8rem;color:var(--muted);margin:0}
 @media (prefers-reduced-motion:no-preference){.env{animation:drop 2.4s ease-in-out infinite}}
 @keyframes drop{0%,15%{transform:translateY(-6px)}55%,100%{transform:translateY(10px)}}
@@ -117,19 +119,9 @@ code{font-size:.85em;background:var(--card);padding:1px 5px;border-radius:4px}
 <header class="hero">
   <div class="inner">
     <div class="brand">
-      <svg class="logo" viewBox="0 0 96 96" role="img" aria-label="Urna electoral">
-        <defs><clipPath id="slotclip"><rect x="0" y="0" width="96" height="41"/></clipPath></defs>
-        <g clip-path="url(#slotclip)"><g class="env">
-          <rect x="34" y="8" width="28" height="34" rx="2" fill="#ffffff"/>
-          <path d="M34 10 L48 22 L62 10" fill="none" stroke="#9fb0d0" stroke-width="2"/>
-          <rect x="41" y="27" width="14" height="4" rx="1" fill="#d8262e"/>
-        </g></g>
-        <path d="M14 40 H82 L78 86 H18 Z" fill="#ffffff" fill-opacity=".14" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/>
-        <rect x="10" y="36" width="76" height="8" rx="2.5" fill="#ffffff"/>
-        <rect x="30" y="38.5" width="36" height="3" rx="1.5" fill="#13254a"/>
-        <path d="M37 64 L45 72 L60 55" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+      <img class="logo" src="logo.png" width="104" height="104" alt="Club Debate Compostela">
       <div>
+        <span class="club">Club Debate Compostela</span>
         <h1>Porra electoral</h1>
         <p>Xerais do 29 de novembro</p>
       </div>
